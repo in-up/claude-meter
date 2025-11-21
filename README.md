@@ -6,7 +6,7 @@
 
 ## 구현 예정 기능
 
-- [ ] 프로젝트 초기화 및 아키텍처 설계
+- [x] 프로젝트 초기화 및 아키텍처 설계
     - Xcode 프로젝트 설정 (MenuBarExtra, Info.plist)
     - MVC 폴더 구조화 (Model, View, Controller, Service, Utils)
 
