@@ -15,14 +15,14 @@
     - PreferenceModel 구현 (SessionKey 및 사용자 플랜 저장)
     - 보안 저장소(Keychain) 또는 UserDefaults 연동 준비
 
-- [ ] Controller & Service 구현 (핵심 로직)
+- [x] Controller & Service 구현
     - APIService 구현 (SessionKey를 쿠키 헤더에 포함한 통신)
     - 내부 API 호출 구현 (조직 ID 조회 및 사용량 데이터 파싱)
     - UsageController 구현 (주기적 데이터 갱신 및 에러 처리)
 
-- [ ] View 구현 (UI)
+- [x] View 구현 (UI/UX)
     - MenuBarView 구현 (게이지 바, 카운트다운 타이머)
-    - SettingsView 구현 (Session Key 입력, 도움말, 자동 실행 토글)
+    - SettingsView 구현 (Session Key 입력, 도움말 등)
 
 - [ ] 시스템 기능 통합
     - Launch at Login 구현 (맥 부팅 시 앱 자동 실행)
