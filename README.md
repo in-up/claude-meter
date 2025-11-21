@@ -10,7 +10,7 @@
     - Xcode 프로젝트 설정 (MenuBarExtra, Info.plist)
     - MVC 폴더 구조화 (Model, View, Controller, Service, Utils)
 
-- [ ] Model 구현 (데이터 및 저장소)
+- [x] Model 구현 (데이터 및 저장소)
     - UsageModel 구조체 설계 (남은 메시지, 리셋 시간, 플랜 정보)
     - PreferenceModel 구현 (SessionKey 및 사용자 플랜 저장)
     - 보안 저장소(Keychain) 또는 UserDefaults 연동 준비
