@@ -11,13 +11,15 @@ class UsageController: ObservableObject {
     // 예상 고갈 시간
     private let estimator = UsageEstimator()
     
-    // 동적 폴링
+    // 동적 폴링 타이머
     private var timer: Timer?
     private var currentInterval: TimeInterval = 60   // 초기 1분
     private let minInterval: TimeInterval = 60     // 최소 1분 (활성 시)
     private let maxInterval: TimeInterval = 600    // 최대 10분 (비활성 시)
     
     init() {
+        NotificationManager.shared.requestAuthorization()
+        
         Task { await fetchData() }
     }
     
@@ -29,12 +31,10 @@ class UsageController: ObservableObject {
         }
     }
 
-        // 데이터를 새로고침하는 메인 함수
+    // 데이터를 새로고침하는 메인 함수
     func fetchData() async {
         // [1] 저장된 세션 키 가져오기
         let sessionKey = PreferenceModel.shared.sessionKey
-        
-        // 세션 키 없을 시 중단
         guard !sessionKey.isEmpty else {
             self.errorMessage = "Session Key를 설정해주세요."
             return
@@ -45,23 +45,20 @@ class UsageController: ObservableObject {
         
         do {
             // [2] APIService를 통해 데이터 가져오기
-            // (1) 조직 ID 조회
             let orgID = try await APIService.shared.fetchOrganizationID(sessionKey: sessionKey)
-            
-            // (2) 사용량 조회
             let apiResponse = try await APIService.shared.fetchUsage(orgID: orgID, sessionKey: sessionKey)
             
-            // (3) 모델 업데이트
+            let oldSessionUsage = self.model.session.usedPercentage
+            // [3] 모델 업데이트 준비
             var newModel = UsageModel(from: apiResponse)
             
-            // 동적 폴링 (사용량 변화 시 사용자가 클로드를 사용 중인 것으로 보고 실행 스케줄링 빠르게 조정)
+            // 동적 폴링 로직
             let hasChanged = (newModel.session.usedPercentage != self.model.session.usedPercentage) ||
                              (newModel.weekly.usedPercentage != self.model.weekly.usedPercentage)
+
             if hasChanged {
-                // 변화 감지 시 최소 간격으로 초기화
                 self.currentInterval = self.minInterval
             } else {
-                // 변화 없으면 1.5배 씩 간격 증가
                 self.currentInterval = min(self.currentInterval * 1.5, self.maxInterval)
             }
             
@@ -69,6 +66,12 @@ class UsageController: ObservableObject {
             newModel.session.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.session)
             newModel.weekly.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.weekly)
             newModel.opus.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.opus)
+            
+            // 알림 조건 확인 및 전송
+            NotificationManager.shared.checkAndSendNotification(
+                oldUsage: oldSessionUsage,
+                newUsage: newModel.session.usedPercentage
+            )
             
             // (4) UI 업데이트
             withAnimation {
@@ -80,7 +83,6 @@ class UsageController: ObservableObject {
             if let apiError = error as? APIError, case .unauthorized = apiError {
                 self.errorMessage = "세션 만료됨"
             }
-            // 에러 발생 시 최소 간격으로 초기화
             self.currentInterval = self.minInterval
         }
         

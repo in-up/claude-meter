@@ -1,12 +1,18 @@
 import Foundation
 import Combine
 
+enum IconStyle: String, CaseIterable, Codable {
+    case lines = "Lines (Default)"
+    case cShape = "C-Shape"
+}
+
 class PreferenceModel: ObservableObject {
     static let shared = PreferenceModel()
     
     private let keySession = "claude_session_key"
     private let keyPlan = "claude_user_plan"
-    private let keyDisplayTarget = "claude_display_target" // 추가된 키
+    private let keyDisplayTarget = "claude_display_target"
+    private let keyIconStyle = "claude_icon_style"
     
     @Published var sessionKey: String {
         didSet { UserDefaults.standard.set(sessionKey, forKey: keySession) }
@@ -16,9 +22,12 @@ class PreferenceModel: ObservableObject {
         didSet { UserDefaults.standard.set(selectedPlan.rawValue, forKey: keyPlan) }
     }
     
-    // 메뉴 바에 표시할 항목
     @Published var displayTarget: UsageType {
         didSet { UserDefaults.standard.set(displayTarget.rawValue, forKey: keyDisplayTarget) }
+    }
+    
+    @Published var iconStyle: IconStyle {
+        didSet { UserDefaults.standard.set(iconStyle.rawValue, forKey: keyIconStyle) }
     }
     
     private init() {
@@ -29,5 +38,8 @@ class PreferenceModel: ObservableObject {
         
         let savedTarget = UserDefaults.standard.string(forKey: keyDisplayTarget) ?? UsageType.session.rawValue
         self.displayTarget = UsageType(rawValue: savedTarget) ?? .session
+        
+        let savedStyle = UserDefaults.standard.string(forKey: keyIconStyle) ?? IconStyle.lines.rawValue
+        self.iconStyle = IconStyle(rawValue: savedStyle) ?? .lines
     }
 }

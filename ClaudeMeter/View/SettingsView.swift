@@ -25,6 +25,16 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
             }
             
+            // 아이콘 스타일 선택
+            Section(header: Text("Appearance")) {
+                Picker("Icon Style", selection: $prefs.iconStyle) {
+                    ForEach(IconStyle.allCases, id: \.self) { style in
+                        Text(style.rawValue).tag(style)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+            
             Section {
                 Button("Quit App") {
                     NSApplication.shared.terminate(nil)
