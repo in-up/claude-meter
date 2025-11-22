@@ -2,17 +2,15 @@ import Foundation
 
 struct UsageItem: Codable {
     var type: UsageType
-    var usedPercentage: Double // 0-1
+    var usedPercentage: Double
     var resetDate: Date?
-    
-    // 추정 고갈 시간
-    var estimatedDepletionDate: Date? = nil
+    var estimatedDepletionDate: Date?
     
     var percentageText: String {
         return String(format: "%.0f%%", usedPercentage * 100)
     }
     
-    // 남은 시간 텍스트
+    // 기존 로직 유지: 리셋 시간 vs 고갈 추정 시간 중 더 짧은 것 반환
     var remainingTimeText: String {
         // 고갈 추정 시간이 있고, 리셋보다 빠르다면 그걸 보여줌
         if let depletion = estimatedDepletionDate,
@@ -35,6 +33,19 @@ struct UsageItem: Codable {
         let minutes = (Int(diff) % 3600) / 60
         return "\(hours)h \(minutes)m to reset"
     }
+    
+    // textType에 따라 시간, 사용량, 또는 모두를 문자열로 반환
+    func displayText(for type: MenuBarTextType) -> String {
+        switch type {
+        case .time:
+            return remainingTimeText
+        case .usage:
+            return percentageText
+        case .all:
+            // 예: "25% (3h 43m left)"
+            return "\(percentageText) (\(remainingTimeText))"
+        }
+    }
 }
 
 struct UsageModel: Codable {
@@ -56,7 +67,7 @@ struct UsageModel: Codable {
         opus: UsageItem(type: .opus, usedPercentage: 0, resetDate: nil),
         lastUpdated: Date()
     )
-    
+
         // UsageAPIResponse을 UsageModel로 변환
     init(from apiResponse: UsageAPIResponse) {
         self.lastUpdated = Date()

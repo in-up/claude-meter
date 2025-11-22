@@ -15,19 +15,33 @@ class NotificationManager {
     }
     
     func checkAndSendNotification(oldUsage: Double, newUsage: Double) {
-        // 50% 이상 -> 5% 미만으로 사용량 감소
-        if oldUsage > 0.5 && newUsage < 0.05 {
-            sendNotification(title: "새로운 세션이 시작되었습니다.", body: "현재 사용량은 \(newUsage)%입니다.")
+        let prefs = PreferenceModel.shared
+        guard prefs.enableNotifications else { return }
+        let percentString = "\(Int(newUsage * 100))"
+        
+        // 1. 리필 알림 (50% 이상 -> 5% 미만)
+        if prefs.enableRefillNoti, oldUsage > 0.5 && newUsage < 0.05 {
+            sendNotification(
+                title: "새로운 세션이 시작되었습니다.",
+                body: "현재 사용량은 \(percentString)%입니다."
+            )
         }
         
-        // 90% 이상 도달
-        if oldUsage < 0.9 && newUsage >= 0.9 {
-            sendNotification(title: "세션이 곧 소진됩니다.", body: "현재 사용량은 \(newUsage)%입니다.")
+        // 2. 사용량 경고 (임계치 도달 시)
+        let threshold = prefs.notificationThreshold
+        if prefs.enableWarningNoti, oldUsage < threshold && newUsage >= threshold {
+            sendNotification(
+                title: "세션이 곧 소진됩니다.",
+                body: "현재 사용량은 \(percentString)%입니다."
+            )
         }
         
-        // 100% 도달
-        if oldUsage < 1.0 && newUsage >= 1.0 {
-            sendNotification(title: "세션이 모두 소진되었습니다.", body: "현재 사용량은 \(newUsage)%입니다.")
+        // 3. 완전 소진 시 (100%)
+        if prefs.enableDepletionNoti, oldUsage < 1.0 && newUsage >= 1.0 {
+            sendNotification(
+                title: "세션이 모두 소진되었습니다.",
+                body: "현재 사용량은 \(percentString)%입니다."
+            )
         }
     }
     
