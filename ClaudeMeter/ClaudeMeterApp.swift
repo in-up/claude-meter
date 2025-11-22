@@ -4,7 +4,7 @@ import SwiftUI
 struct ClaudeMeterApp: App {
     @StateObject var controller = UsageController()
     @ObservedObject var prefs = PreferenceModel.shared
-    
+
     var body: some Scene {
         MenuBarExtra {
             MenuBarView(controller: controller)
@@ -16,13 +16,14 @@ struct ClaudeMeterApp: App {
                     opus: controller.model.opus.usedPercentage,
                     style: prefs.iconStyle
                 )
-                
+
                 if prefs.showMenuBarText {
-                    let item = controller.model.getItem(for: prefs.displayTarget)
-
-
-                    Text(item.displayText(for: prefs.menuBarTextType))
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    Text(
+                        textForType(
+                            item: controller.model.session,
+                            type: prefs.menuBarTextType
+                        )
+                    ).font(.system(size: 12, weight: .medium, design: .monospaced))
                 }
             }
         }
@@ -31,4 +32,8 @@ struct ClaudeMeterApp: App {
             SettingsView()
         }
     }
+
+    func textForType(item: UsageItem, type: MenuBarTextType) -> String {
+            return item.displayText(for: type)
+        }
 }

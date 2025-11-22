@@ -90,13 +90,6 @@ struct GeneralSettingsView: View {
                         }
                     }
                 }
-                
-                // 표시 대상
-                Picker("Display Target", selection: $prefs.displayTarget) {
-                    ForEach(UsageType.allCases, id: \.self) { type in
-                        Text(type.label).tag(type)
-                    }
-                }
             }
             
             // 3. Account

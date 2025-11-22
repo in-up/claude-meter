@@ -18,7 +18,6 @@ class PreferenceModel: ObservableObject {
     
     private let keySession = "claude_session_key"
     private let keyPlan = "claude_user_plan"
-    private let keyDisplayTarget = "claude_display_target"
     private let keyIconStyle = "claude_icon_style"
 
     private let keyShowText = "claude_show_text"
@@ -32,7 +31,6 @@ class PreferenceModel: ObservableObject {
     
     @Published var sessionKey: String { didSet { UserDefaults.standard.set(sessionKey, forKey: keySession) } }
     @Published var selectedPlan: UserPlan { didSet { UserDefaults.standard.set(selectedPlan.rawValue, forKey: keyPlan) } }
-    @Published var displayTarget: UsageType { didSet { UserDefaults.standard.set(displayTarget.rawValue, forKey: keyDisplayTarget) } }
     @Published var iconStyle: IconStyle { didSet { UserDefaults.standard.set(iconStyle.rawValue, forKey: keyIconStyle) } }
     @Published var showMenuBarText: Bool { didSet { UserDefaults.standard.set(showMenuBarText, forKey: keyShowText) } }
     @Published var menuBarTextType: MenuBarTextType { didSet { UserDefaults.standard.set(menuBarTextType.rawValue, forKey: keyTextType) } }
@@ -48,9 +46,6 @@ class PreferenceModel: ObservableObject {
         
         let savedPlan = UserDefaults.standard.string(forKey: keyPlan) ?? UserPlan.free.rawValue
         self.selectedPlan = UserPlan(rawValue: savedPlan) ?? .free
-        
-        let savedTarget = UserDefaults.standard.string(forKey: keyDisplayTarget) ?? UsageType.session.rawValue
-        self.displayTarget = UsageType(rawValue: savedTarget) ?? .session
         
         let savedStyle = UserDefaults.standard.string(forKey: keyIconStyle) ?? IconStyle.lines.rawValue
         self.iconStyle = IconStyle(rawValue: savedStyle) ?? .lines
