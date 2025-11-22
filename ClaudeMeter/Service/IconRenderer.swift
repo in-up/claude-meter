@@ -41,11 +41,11 @@ fileprivate struct IconContainerView: View {
                     CIconView(session: session, weekly: weekly, opus: opus)
                 }
             }
-            .padding(1)
+            .compositingGroup()
             
-            BadgeView(usage: session)
+            BadgeView(usage: session).offset(x: style == .cShape ? 3 : 0, y: 0)
         }
-        .frame(width: 22, height: 16)
+        .frame(width: 23, height: 17)
     }
 }
 
@@ -53,16 +53,27 @@ fileprivate struct BadgeView: View {
     var usage: Double
     
     var body: some View {
-        if usage >= 1.0 {
-            // 사용량 100% 도달 시 자물쇠 뱃지
-            Image(systemName: "lock.circle.fill")
-                .font(.system(size: 8))
-                .background(Circle().fill(Color.white).padding(1))
-        } else if usage >= 0.7 {
-            // 사용량 70% 이상 시 경고 뱃지
-            Image(systemName: "exclamationmark.circle.fill")
-                .font(.system(size: 8))
-                .background(Circle().fill(Color.white).padding(1))
+        let badgeConfig: (name: String, size: CGFloat)? = {
+            if usage >= 1.0 {
+                return ("lock.fill", 7)
+            } else if usage >= 0.7 {
+                return ("exclamationmark", 8)
+            }
+            return nil
+        }()
+        
+        if let config = badgeConfig {
+            ZStack {
+                Circle()
+                    .fill(Color.black)
+                    .frame(width: 9, height: 9)
+                    .blendMode(.destinationOut)
+                
+                Image(systemName: config.name)
+                    .font(.system(size: config.size, weight: .heavy)) // ⭐️ 두께를 Heavy로 설정
+                    .foregroundStyle(Color.black)
+            }
+            .compositingGroup()
         }
     }
 }
@@ -75,16 +86,15 @@ fileprivate struct LinesIconView: View {
     private let drawingColor = Color.black
     
     var body: some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 1.5) {
             makeBar(usage: session)
             makeBar(usage: weekly)
             
             if opus > 0 {
                 makeBar(usage: opus)
             } else {
-                // 미사용 시
                 Capsule()
-                    .fill(drawingColor.opacity(0.2))
+                    .fill(drawingColor.opacity(0.3))
                     .frame(width: 16, height: 3.5)
             }
         }
@@ -102,7 +112,7 @@ fileprivate struct LinesIconView: View {
         let fillWidth = max(0, min(width * visualUsage, width))
         
         return ZStack(alignment: .leading) {
-            drawingColor.opacity(0.2)
+            drawingColor.opacity(0.3)
             
             if fillWidth > 0 {
                 drawingColor
@@ -139,7 +149,7 @@ fileprivate struct CIconView: View {
         return ZStack {
             Circle()
                 .trim(from: 0, to: trimTo)
-                .stroke(color.opacity(0.2), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                .stroke(color.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
             
             Circle()
                 .trim(from: trimTo * (1 - visualUsage), to: trimTo)
