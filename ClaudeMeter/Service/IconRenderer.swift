@@ -126,7 +126,7 @@ fileprivate struct CIconView: View {
                 makeArc(usage: opus, radius: 2.5, lineWidth: 1.5)
             }
         }
-        .rotationEffect(.degrees(90))
+        .rotationEffect(.degrees(270))
     }
     
     func makeArc(usage: Double, radius: CGFloat, lineWidth: CGFloat) -> some View {
@@ -142,7 +142,7 @@ fileprivate struct CIconView: View {
                 .stroke(color.opacity(0.2), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
             
             Circle()
-                .trim(from: 0, to: trimTo * visualUsage)
+                .trim(from: trimTo * (1 - visualUsage), to: trimTo)
                 .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
         }
         .frame(width: radius * 2, height: radius * 2)
