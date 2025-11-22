@@ -10,9 +10,9 @@ struct UsageItem: Codable {
         return String(format: "%.0f%%", usedPercentage * 100)
     }
     
-    // 남은 시간 텍스트 (예: "4시간 14분")
+    // 남은 시간 텍스트
     var remainingTimeText: String {
-        guard let resetDate = resetDate else { return "-" }
+        guard let resetDate = resetDate else { return "세션이 시작되지 않음" }
         let diff = resetDate.timeIntervalSince(Date())
         if diff <= 0 { return "Ready" }
         
@@ -42,7 +42,7 @@ struct UsageModel: Codable {
         lastUpdated: Date()
     )
     
-    // UsageAPIResponse을 UsageModel로 변환하는 생성자
+    // UsageAPIResponse을 UsageModel로 변환
     init(from apiResponse: UsageAPIResponse) {
         self.lastUpdated = Date()
         
@@ -68,7 +68,7 @@ struct UsageModel: Codable {
             resetDate: formatter.date(from: weeklyDateStr)
         )
         
-        // 3. 오푸스 전용 세션
+        // 3. Opus 전용 세션
         let opusUtil = apiResponse.sevenDayOpus?.utilization ?? 0
         let opusDateStr = apiResponse.sevenDayOpus?.resetsAt ?? ""
         self.opus = UsageItem(

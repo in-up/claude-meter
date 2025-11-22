@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MenuBarView: View {
-    @StateObject var controller = UsageController()
+    @ObservedObject var controller: UsageController
     @ObservedObject var prefs = PreferenceModel.shared
     
     @State private var showSettings = false
