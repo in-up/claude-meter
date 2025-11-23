@@ -28,9 +28,8 @@ struct ClaudeMeterApp: App {
             }
         }
         .menuBarExtraStyle(.window)
-        Settings {
-            SettingsView()
-        }
+        // 로고 내보내기를 위해 설정 버튼을 로고 내보내기 뷰로 연결
+        Settings { LogoExportView() }
     }
 
     func textForType(item: UsageItem, type: MenuBarTextType) -> String {
