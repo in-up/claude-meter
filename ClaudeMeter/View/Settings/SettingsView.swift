@@ -1,0 +1,32 @@
+import SwiftUI
+
+struct SettingsView: View {
+    @State private var selectedTab: SettingsTab = .general
+    
+    enum SettingsTab: String, CaseIterable, Identifiable {
+        case general = "General"
+        case notifications = "Notifications"
+        case about = "About"
+        
+        var id: String { rawValue }
+    }
+    
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            GeneralSettingsView()
+                .tabItem { Label("General", systemImage: "gear") }
+                .tag(SettingsTab.general)
+            
+            NotificationSettingsView()
+                .tabItem { Label("Notifications", systemImage: "bell.badge") }
+                .tag(SettingsTab.notifications)
+            
+            AboutSettingsView()
+                .tabItem { Label("About", systemImage: "info.circle") }
+                .tag(SettingsTab.about)
+        }
+        .frame(width: 450, height: 420)
+        .padding()
+        .background(DockIconToggler())
+    }
+}

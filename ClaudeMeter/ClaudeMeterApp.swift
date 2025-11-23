@@ -32,7 +32,13 @@ struct ClaudeMeterApp: App {
             SettingsView()
         }
     }
-
+    
+    init() {
+            Task {
+                await UpdateManager.shared.checkForUpdates()
+            }
+        }
+    
     func textForType(item: UsageItem, type: MenuBarTextType) -> String {
             return item.displayText(for: type)
         }
