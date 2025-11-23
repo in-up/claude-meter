@@ -160,29 +160,31 @@ struct AboutSettingsView: View {
         Form {
             Section {
                 HStack(spacing: 20) {
-                    Image(systemName: "chart.bar.fill")
+                    Image("AppLogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(.purple)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(12)
+                        .frame(width: 64, height: 64)
+                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                     
                     VStack(alignment: .leading, spacing: 6) {
                         Text("ClaudeMeter")
-                            .font(.title2).fontWeight(.bold)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        
                         Text("Version 1.0.0")
-                            .font(.body).foregroundColor(.secondary)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                        
                         Text("Designed for macOS")
-                            .font(.caption).foregroundColor(.secondary)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
                 }
                 .padding(.vertical, 10)
             }
             
             Section {
-                Link("Visit GitHub Repository", destination: URL(string: "https://github.com/wooseok-dev/claude-meter")!)
+                Link("Visit GitHub Repository", destination: URL(string: "https://github.com/in-up/claude-meter")!)
             }
         }
         .formStyle(.grouped)
