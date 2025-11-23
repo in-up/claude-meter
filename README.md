@@ -1,4 +1,8 @@
 # ClaudeMeter for macOS
+
+![Onboarding](./images/onboarding.png)
+
+
 > macOS Menu Bar App to monitor Claude.ai usage limits.
 
 > Claude.ai의 플랜 사용량을 모니터링할 수 있는 macOS 메뉴 바 앱입니다.
@@ -24,7 +28,7 @@
     - MenuBarView 구현 (게이지 바, 카운트다운 타이머)
     - SettingsView 구현 (Session Key 입력, 도움말 등)
 
-- [ ] 시스템 기능 통합
+- [x] 시스템 기능 통합
     - Launch at Login 구현 (맥 부팅 시 앱 자동 실행)
     - 알림 기능 구현 (리셋 시간 도달 시 알림)
 
