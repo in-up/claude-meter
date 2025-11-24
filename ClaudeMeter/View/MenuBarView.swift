@@ -10,7 +10,7 @@ struct MenuBarView: View {
             HStack {
                 Image(systemName: "chart.bar.fill")
                     .foregroundColor(.purple)
-                Text("ClaudeMeter")
+                Text("Claudemeter")
                     .font(.headline)
                 
                 Spacer()

@@ -14,7 +14,7 @@ struct AboutSettingsView: View {
                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                     
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("ClaudeMeter")
+                        Text("Claudemeter")
                             .font(.title2)
                             .fontWeight(.bold)
                         
