@@ -22,18 +22,20 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 ### Key Features
 
 - **Real-time Usage Monitoring**: You can check your current session, weekly, and Opus limits in real-time.
-<img src="./images/popover.png" width="300px">
+<img src="./images/popover.png" width="400px">
 <p>
 
 - **Usage Depletion Time Prediction**: It analyzes recent usage fluctuations using Linear Regression to predict the estimated usage depletion time.
 - **Notification and Warning Function**: Provides notifications to users when a new session starts or when the set usage limit is reached.
 
     <img src="./images/notification.png" width="300px">
+
     <img src="./images/usage.png" width="300px">
     <p>
 
 - **Customizable Menu Bar Icon**: You can choose the icon shape according to your preference.
   <img src="./images/shape.png" width="300px">
+  
   <img src="./images/customize.png" width="300px">
   <p>
 
@@ -61,7 +63,10 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 ---
 
 ### License
-MIT License (Open Source License)
+<img src="./images/logo.png" width="64px">
+
+
+**MIT License (Open Source License)**
 
 ### Disclaimer
 This application is an independent, unofficial tool and is not affiliated with, endorsed by, or sponsored by Anthropic, PBC. "Claude" and "Claude.ai" are trademarks of Anthropic, PBC. All product names, logos, and brands are property of their respective owners.

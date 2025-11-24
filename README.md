@@ -22,7 +22,7 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
 ### 주요 기능
 
 - **실시간 사용량 모니터링**: 현재 세션 한도, 주간 한도, Opus 한도를 실시간으로 확인할 수 있어요.
-  <img src="./images/popover.png" width="300px">
+  <img src="./images/popover.png" width="400px">
   <p>
 
 - **사용량 소진 시간 예측**: 선형 회귀(Linear Regression)를 이용해 최근 사용량 변동을 분석하여 예상되는 사용량 소진 시간을 예측합니다.
@@ -35,9 +35,9 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
     1.  최근 사용량 변동으로부터 선형 회귀(Linear Regression)로 얻어진 소진 예측 시간
     2.  새로운 세션이 시작되는 시간
 
-    **왜 이렇게 표시하나요?**
+    > **왜 이렇게 표시하나요?**
 
-    만약 예상 소진 시점이 다음 세션 시작 시간보다 늦다면, 사용자는 세션을 모두 소진하기 전에 새 세션을 받게 됩니다. 따라서 사용자가 잔여 시간을 예측하고 계획적으로 사용량을 소진할 수 있도록 하나의 시간만을 표시합니다.
+      만약 예상 소진 시점이 다음 세션 시작 시간보다 늦다면, 사용자는 세션을 모두 소진하기 전에 새 세션을 받게 됩니다. 따라서 사용자가 잔여 시간을 예측하고 계획적으로 사용량을 소진할 수 있도록 하나의 시간만을 표시합니다.
 
     </details>
 
@@ -47,11 +47,13 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
 - **알림 및 경고 기능**: 새로운 세션이 시작되거나 설정한 사용량에 도달했을 때 사용자에게 알림을 제공합니다.
 
   <img src="./images/notification.png" width="300px">
+  
   <img src="./images/usage.png" width="300px">
   <p>
 - **사용자 커스터마이징**: 취향에 맞게 아이콘 모양, 보여지는 텍스트(남은 시간, 사용량(%) 등)를 선택할 수 있어요.
 
   <img src="./images/shape.png" width="300px">
+
   <img src="./images/customize.png" width="300px">
   <p>
 
@@ -80,7 +82,11 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
 ---
 
 ### 애플리케이션 라이선스
-MIT License (Open Source License)
+
+<img src="./images/logo.png" width="64px">
+
+
+**MIT License (Open Source License)**
 
 ### 면책 조항
 해당 애플리케이션은 Anthropic, PBC와 무관한 독립적인 서드파티 도구이며, 어떠한 제휴나 보증 및 후원 관계도 존재하지 않습니다. 'Claude', 'Claude.ai'는 Anthropic, PBC의 상표입니다. 기타 모든 제품명, 로고 및 브랜드의 소유권은 해당 소유자에게 있습니다.
