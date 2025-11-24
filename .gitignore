@@ -1,0 +1,5 @@
+*.dmg
+*.app
+dist/
+build/
+DerivedData/
