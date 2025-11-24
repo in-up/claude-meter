@@ -4,8 +4,8 @@
 
 <div align="center">
   <img src="./images/onboarding.png">
-  <h1>Claudemeter</h1>
-  <strong>Claude AI API 사용량을 모니터링하는 macOS 메뉴바 앱입니다.</strong>
+  <h1>Claudemeter for macOS</h1>
+  <strong>Claude.ai 사용량을 한 눈에 모니터링하세요.</strong>
   <p>
   <p>
 </div>
@@ -47,7 +47,7 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
 - **알림 및 경고 기능**: 새로운 세션이 시작되거나 설정한 사용량에 도달했을 때 사용자에게 알림을 제공합니다.
 
   <img src="./images/notification.png" width="300px">
-  
+
   <img src="./images/usage.png" width="300px">
   <p>
 - **사용자 커스터마이징**: 취향에 맞게 아이콘 모양, 보여지는 텍스트(남은 시간, 사용량(%) 등)를 선택할 수 있어요.
@@ -78,6 +78,12 @@ Claudemeter는 Claude.ai의 사용량 한도를 손쉽게 추적할 수 있도�
 
 <p>
 
+### 보안 경고 해결하기
+앱 실행 시 보안 경고가 뜬다면, Control 키를 누른 상태로 앱을 클릭한 뒤 **열기(Open)를** 선택하거나, 터미널에서 아래 명령어를 입력해주세요.
+
+```Bash
+xattr -cr /Applications/Claudemeter.app
+```
 
 ---
 
