@@ -23,7 +23,7 @@ class NotificationManager {
         if prefs.enableRefillNoti, oldUsage > 0.5 && newUsage < 0.05 {
             sendNotification(
                 title: String(localized: "New session started"),
-                body: String(localized: "Current usage is \(percentString)%%.")
+                body: String(localized: "Current usage is \(percentString)%.")
             )
         }
 
@@ -32,7 +32,7 @@ class NotificationManager {
         if prefs.enableWarningNoti, oldUsage < threshold && newUsage >= threshold {
             sendNotification(
                 title: String(localized: "Session running low"),
-                body: String(localized: "Current usage is \(percentString)%%.")
+                body: String(localized: "Current usage is \(percentString)%.")
             )
         }
 
@@ -40,7 +40,7 @@ class NotificationManager {
         if prefs.enableDepletionNoti, oldUsage < 1.0 && newUsage >= 1.0 {
             sendNotification(
                 title: String(localized: "Session depleted"),
-                body: String(localized: "Current usage is \(percentString)%%.")
+                body: String(localized: "Current usage is \(percentString)%.")
             )
         }
     }

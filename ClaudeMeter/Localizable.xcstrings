@@ -177,19 +177,19 @@
         }
       }
     },
-    "Current usage is %@%%." : {
+    "Current usage is %@%." : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Current usage is %@%%."
+            "value" : "Current usage is %@%."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 사용량은 %@%%입니다."
+            "value" : "현재 사용량은 %@%입니다."
           }
         }
       }
