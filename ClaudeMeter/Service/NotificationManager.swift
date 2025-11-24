@@ -18,29 +18,29 @@ class NotificationManager {
         let prefs = PreferenceModel.shared
         guard prefs.enableNotifications else { return }
         let percentString = "\(Int(newUsage * 100))"
-        
+
         // 1. 리필 알림 (50% 이상 -> 5% 미만)
         if prefs.enableRefillNoti, oldUsage > 0.5 && newUsage < 0.05 {
             sendNotification(
-                title: "새로운 세션이 시작되었습니다.",
-                body: "현재 사용량은 \(percentString)%입니다."
+                title: String(localized: "New session started"),
+                body: String(localized: "Current usage is \(percentString)%%.")
             )
         }
-        
+
         // 2. 사용량 경고 (임계치 도달 시)
         let threshold = prefs.notificationThreshold
         if prefs.enableWarningNoti, oldUsage < threshold && newUsage >= threshold {
             sendNotification(
-                title: "세션이 곧 소진됩니다.",
-                body: "현재 사용량은 \(percentString)%입니다."
+                title: String(localized: "Session running low"),
+                body: String(localized: "Current usage is \(percentString)%%.")
             )
         }
-        
+
         // 3. 완전 소진 시 (100%)
         if prefs.enableDepletionNoti, oldUsage < 1.0 && newUsage >= 1.0 {
             sendNotification(
-                title: "세션이 모두 소진되었습니다.",
-                body: "현재 사용량은 \(percentString)%입니다."
+                title: String(localized: "Session depleted"),
+                body: String(localized: "Current usage is \(percentString)%%.")
             )
         }
     }

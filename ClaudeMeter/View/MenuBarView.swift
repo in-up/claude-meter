@@ -61,7 +61,7 @@ struct MenuBarView: View {
             // 3. 푸터 영역
             HStack {
                 // 마지막 업데이트 시간 표시
-                Text("Updated " + controller.model.lastUpdated.formatted(date: .omitted, time: .shortened))
+                Text("Updated \(controller.model.lastUpdated.formatted(date: .omitted, time: .shortened))")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
@@ -70,9 +70,7 @@ struct MenuBarView: View {
                 Button {
                     Task { await controller.fetchData() }
                 } label: {
-                    Image(systemName: "arrow.clockwise")
-                        .rotationEffect(.degrees(controller.isLoading ? 360 : 0))
-                        .animation(controller.isLoading ? .linear(duration: 1).repeatForever(autoreverses: false) : .default, value: controller.isLoading)
+                    RefreshIcon(isLoading: controller.isLoading)
                 }
                 .buttonStyle(.plain)
                 .disabled(controller.isLoading)
@@ -97,7 +95,7 @@ struct UsageRow: View {
                 
                 // 남은 사용량 퍼센트
                 let remaining = 100 - (item.usedPercentage * 100)
-                Text("\(Int(remaining))% 남음")
+                Text("\(Int(remaining))% remaining")
                     .font(.system(.body, design: .monospaced))
                     .bold()
             }
@@ -133,5 +131,26 @@ struct UsageRow: View {
         case 0.5..<0.8: return .orange
         default: return .red
         }
+    }
+}
+
+struct RefreshIcon: View {
+    let isLoading: Bool
+    @State private var rotation: Double = 0
+
+    var body: some View {
+        Image(systemName: "arrow.clockwise")
+            .rotationEffect(.degrees(rotation))
+            .onChange(of: isLoading) { _, newValue in
+                if newValue {
+                    withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                        rotation = 360
+                    }
+                } else {
+                    withAnimation(.default) {
+                        rotation = 0
+                    }
+                }
+            }
     }
 }

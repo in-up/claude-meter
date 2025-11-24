@@ -10,7 +10,7 @@ struct GeneralSettingsView: View {
         Form {
             // 1. Startup
             Section {
-                Toggle("Start at Login", isOn: $launchAtLogin)
+                Toggle(String(localized: "Start at Login"), isOn: $launchAtLogin)
                     .toggleStyle(.switch)
                     .onChange(of: launchAtLogin) { _, newValue in
                         do {
@@ -19,9 +19,9 @@ struct GeneralSettingsView: View {
                         } catch { launchAtLogin = !newValue }
                     }
             }
-            
+
             // 2. Appearance
-            Section(header: Text("Appearance")) {
+            Section(header: Text(String(localized: "Appearance"))) {
                 HStack(spacing: 16) {
                     ForEach(IconStyle.allCases, id: \.self) { style in
                         VStack(spacing: 8) {
@@ -40,37 +40,40 @@ struct GeneralSettingsView: View {
                             .onTapGesture { withAnimation { prefs.iconStyle = style } }
                             .contentShape(Rectangle())
                             
-                            Text(style.rawValue).font(.caption)
+                            Text(style.localizedName).font(.caption)
                         }
                     }
                 }
-                
-                Divider().padding(.vertical, 4)
-                
-                Toggle("Show Text in Menu Bar", isOn: $prefs.showMenuBarText)
-                
+
+                Toggle(String(localized: "Show Text in Menu Bar"), isOn: $prefs.showMenuBarText)
+
                 if prefs.showMenuBarText {
-                    Picker("Text Format", selection: $prefs.menuBarTextType) {
+                    Picker(String(localized: "Text Format"), selection: $prefs.menuBarTextType) {
                         ForEach(MenuBarTextType.allCases, id: \.self) { type in
-                            Text(type.rawValue).tag(type)
+                            Text(type.localizedName).tag(type)
                         }
                     }
                 }
             }
-            
+
             // 3. Account
-            Section(header: Text("Account")) {
+            Section(header: Text(String(localized: "Account"))) {
                 HStack {
                     if isSecure {
-                        SecureField("sk-ant-sid01...", text: $prefs.sessionKey).textFieldStyle(.roundedBorder)
+                        SecureField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
+                            .textFieldStyle(.roundedBorder)
                     } else {
-                        TextField("sk-ant-sid01...", text: $prefs.sessionKey).textFieldStyle(.roundedBorder)
+                        TextField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
+                            .textFieldStyle(.roundedBorder)
                     }
                     Button { isSecure.toggle() } label: {
                         Image(systemName: isSecure ? "eye.slash" : "eye").foregroundColor(.secondary)
                     }.buttonStyle(.plain)
                 }
-                Link("Get Session Key", destination: URL(string: "https://github.com/in-up/claude-meter")!)
+                Text(String(localized: "Stored securely on your Mac."))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Link(String(localized: "Get Session Key"), destination: URL(string: "https://github.com/in-up/claude-meter")!)
                     .font(.caption).foregroundColor(.blue)
             }
         }

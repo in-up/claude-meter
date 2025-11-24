@@ -19,11 +19,11 @@ struct AboutSettingsView: View {
                             .fontWeight(.bold)
                         
                         HStack {
-                            Text("Version \(updateManager.currentVersion)")
+                            Text("Version \(updateManager.currentVersion)", comment: "Version label with version number")
                                 .foregroundColor(.secondary)
-                            
+
                             if updateManager.isUpdateAvailable {
-                                Text("NEW \(updateManager.latestVersion)")
+                                Text("NEW \(updateManager.latestVersion)", comment: "New version badge")
                                     .font(.caption2)
                                     .fontWeight(.bold)
                                     .padding(.horizontal, 6)
@@ -33,8 +33,8 @@ struct AboutSettingsView: View {
                                     .clipShape(Capsule())
                             }
                         }
-                        
-                        Text("Designed for macOS")
+
+                        Text(String(localized: "Designed for macOS"))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -45,9 +45,9 @@ struct AboutSettingsView: View {
             Section {
                 if updateManager.isUpdateAvailable {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("A new version is available!")
+                        Text(String(localized: "A new version is available!"))
                             .font(.headline)
-                        
+
                         if let url = updateManager.releaseURL {
                             Link("Download \(updateManager.latestVersion)", destination: url)
                                 .buttonStyle(.borderedProminent)
@@ -56,20 +56,20 @@ struct AboutSettingsView: View {
                     .padding(.vertical, 4)
                 } else {
                     HStack {
-                        Button("Check for Updates") {
+                        Button(String(localized: "Check for Updates")) {
                             Task { await updateManager.checkForUpdates() }
                         }
                         .disabled(updateManager.lastChecked == nil)
-                        
+
                         if let lastChecked = updateManager.lastChecked {
-                            Text("Last checked: \(lastChecked.formatted(date: .omitted, time: .shortened))")
+                            Text("Last checked: \(lastChecked.formatted(date: .omitted, time: .shortened))", comment: "Last update check time")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
                     }
                 }
-                
-                Link("Visit GitHub Repository", destination: URL(string: "https://github.com/in-up/claude-meter")!)
+
+                Link(String(localized: "Visit GitHub Repository"), destination: URL(string: "https://github.com/in-up/claude-meter")!)
             }
         }
         .formStyle(.grouped)

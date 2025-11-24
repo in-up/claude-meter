@@ -5,12 +5,27 @@ import Foundation
 enum IconStyle: String, CaseIterable, Codable {
     case lines = "Lines"
     case cShape = "Tachometer"
+
+    var localizedName: String {
+        switch self {
+        case .lines: return String(localized: "Lines")
+        case .cShape: return String(localized: "Tachometer")
+        }
+    }
 }
 
 enum MenuBarTextType: String, CaseIterable, Codable {
     case time = "Time Left"
     case usage = "Usage"
     case all = "Show All"
+
+    var localizedName: String {
+        switch self {
+        case .time: return String(localized: "Time Left")
+        case .usage: return String(localized: "Usage")
+        case .all: return String(localized: "Show All")
+        }
+    }
 }
 
 class PreferenceModel: ObservableObject {

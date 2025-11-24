@@ -14,15 +14,15 @@ struct SettingsView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             GeneralSettingsView()
-                .tabItem { Label("General", systemImage: "gear") }
+                .tabItem { Label(String(localized: "General"), systemImage: "gear") }
                 .tag(SettingsTab.general)
-            
+
             NotificationSettingsView()
-                .tabItem { Label("Notifications", systemImage: "bell.badge") }
+                .tabItem { Label(String(localized: "Notifications"), systemImage: "bell.badge") }
                 .tag(SettingsTab.notifications)
-            
+
             AboutSettingsView()
-                .tabItem { Label("About", systemImage: "info.circle") }
+                .tabItem { Label(String(localized: "About"), systemImage: "info.circle") }
                 .tag(SettingsTab.about)
         }
         .frame(width: 450, height: 420)

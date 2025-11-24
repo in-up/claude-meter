@@ -17,21 +17,21 @@ struct UsageItem: Codable {
            let reset = resetDate,
            depletion < reset {
             let diff = depletion.timeIntervalSince(Date())
-            if diff <= 0 { return "Depleted" }
-            
+            if diff <= 0 { return String(localized: "Depleted") }
+
             let hours = Int(diff) / 3600
             let minutes = (Int(diff) % 3600) / 60
-            return "\(hours)h \(minutes)m left"
+            return String(localized: "\(hours)h \(minutes)m left")
         }
-        
+
         // 그렇지 않으면 리셋 시간까지 남은 시간 표시
         guard let resetDate = resetDate else { return "-" }
         let diff = resetDate.timeIntervalSince(Date())
-        if diff <= 0 { return "Ready" }
-        
+        if diff <= 0 { return String(localized: "Ready") }
+
         let hours = Int(diff) / 3600
         let minutes = (Int(diff) % 3600) / 60
-        return "\(hours)h \(minutes)m to reset"
+        return String(localized: "\(hours)h \(minutes)m to reset")
     }
     
     // textType에 따라 시간, 사용량, 또는 모두를 문자열로 반환
