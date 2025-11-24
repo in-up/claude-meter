@@ -42,9 +42,15 @@ struct DockIconToggler: NSViewRepresentable {
 // MARK: - Icon Preview
 struct IconPreview: View {
     var style: IconStyle
-    let session = 0.5; let weekly = 0.2; let opus = 0.0
+
     var body: some View {
-        IconRenderer.shared.render(session: session, weekly: weekly, opus: opus, style: style)
-            .resizable().aspectRatio(contentMode: .fit).foregroundColor(.primary)
+        Group {
+            switch style {
+            case .lines:
+                LinesIconView(session: 0.5, weekly: 0.2, opus: 0.0)
+            case .cShape:
+                TachometerIconView(session: 0.5, weekly: 0.2, opus: 0.0)
+            }
+        }
     }
 }

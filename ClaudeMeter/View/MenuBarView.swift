@@ -3,13 +3,19 @@ import SwiftUI
 struct MenuBarView: View {
     @ObservedObject var controller: UsageController
     @ObservedObject var prefs = PreferenceModel.shared
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack(spacing: 16) {
             // 헤더 영역
             HStack {
-                Image(systemName: "chart.bar.fill")
-                    .foregroundColor(.purple)
+                TachometerIconView(
+                    session: 1.0,
+                    weekly: 1.0,
+                    opus: 0.0,
+                    color: colorScheme == .light ? .orange : Color(red: 0xDA/255, green: 0x6A/255, blue: 0x46/255)
+                )
+                .frame(width: 18, height: 18)
                 Text("Claudemeter")
                     .font(.headline)
                 
@@ -50,9 +56,9 @@ struct MenuBarView: View {
                     .padding()
             } else {
                 VStack(spacing: 20) {
-                    UsageRow(item: controller.model.session)
-                    UsageRow(item: controller.model.weekly)
-                    UsageRow(item: controller.model.opus)
+                    UsageRow(item: controller.model.session, prefs: prefs)
+                    UsageRow(item: controller.model.weekly, prefs: prefs)
+                    UsageRow(item: controller.model.opus, prefs: prefs)
                 }
             }
             
@@ -83,6 +89,7 @@ struct MenuBarView: View {
 
 struct UsageRow: View {
     var item: UsageItem
+    @ObservedObject var prefs: PreferenceModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -126,9 +133,10 @@ struct UsageRow: View {
     
     // 사용량에 따라 아이콘 색상 변화
     func colorForUsage(_ usage: Double) -> Color {
+        let threshold = prefs.notificationThreshold
         switch usage {
-        case 0..<0.5: return .green
-        case 0.5..<0.8: return .orange
+        case 0..<threshold: return .blue
+        case threshold..<1.0: return .orange
         default: return .red
         }
     }
@@ -154,3 +162,4 @@ struct RefreshIcon: View {
             }
     }
 }
+

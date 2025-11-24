@@ -316,19 +316,19 @@
         }
       }
     },
-    "Get Session Key" : {
+    "How to get Session Key?" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Get Session Key"
+            "value" : "How to get Session Key?"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "세션 키 얻기"
+            "value" : "세션 키는 어떻게 얻나요?"
           }
         }
       }
@@ -346,6 +346,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "마지막 확인: %@"
+          }
+        }
+      }
+    },
+    "Language can be changed in System Settings → General → Language & Region → Apps." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language can be changed in System Settings → General → Language & Region → Apps."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 > 일반 > 언어 및 지역 > 앱에서 언어를 변경할 수 있습니다."
           }
         }
       }

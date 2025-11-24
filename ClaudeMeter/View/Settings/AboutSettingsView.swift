@@ -12,6 +12,7 @@ struct AboutSettingsView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 64, height: 64)
                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                        .padding(.leading, 15)
                     
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Claudemeter")

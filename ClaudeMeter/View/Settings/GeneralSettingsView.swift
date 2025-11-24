@@ -21,7 +21,10 @@ struct GeneralSettingsView: View {
             }
 
             // 2. Appearance
-            Section(header: Text(String(localized: "Appearance"))) {
+            Section(
+                header: Text(String(localized: "Appearance")),
+                footer: Text(String(localized: "Language can be changed in System Settings → General → Language & Region → Apps."))
+            ) {
                 HStack(spacing: 16) {
                     ForEach(IconStyle.allCases, id: \.self) { style in
                         VStack(spacing: 8) {
@@ -32,14 +35,14 @@ struct GeneralSettingsView: View {
                                         RoundedRectangle(cornerRadius: 8)
                                             .stroke(prefs.iconStyle == style ? Color.accentColor : Color.gray.opacity(0.2), lineWidth: 1)
                                     )
-                                
+
                                 IconPreview(style: style)
                                     .frame(width: 44, height: 32)
                             }
                             .frame(width: 80, height: 60)
                             .onTapGesture { withAnimation { prefs.iconStyle = style } }
                             .contentShape(Rectangle())
-                            
+
                             Text(style.localizedName).font(.caption)
                         }
                     }
@@ -58,22 +61,24 @@ struct GeneralSettingsView: View {
 
             // 3. Account
             Section(header: Text(String(localized: "Account"))) {
-                HStack {
-                    if isSecure {
-                        SecureField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
-                            .textFieldStyle(.roundedBorder)
-                    } else {
-                        TextField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
-                            .textFieldStyle(.roundedBorder)
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        if isSecure {
+                            SecureField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
+                                .textFieldStyle(.roundedBorder)
+                        } else {
+                            TextField(String(localized: "Session Key"), text: $prefs.sessionKey, prompt: Text("sk-ant-sid01..."))
+                                .textFieldStyle(.roundedBorder)
+                        }
+                        Button { isSecure.toggle() } label: {
+                            Image(systemName: isSecure ? "eye.slash" : "eye").foregroundColor(.secondary)
+                        }.buttonStyle(.plain)
                     }
-                    Button { isSecure.toggle() } label: {
-                        Image(systemName: isSecure ? "eye.slash" : "eye").foregroundColor(.secondary)
-                    }.buttonStyle(.plain)
+                    Text(String(localized: "Stored securely on your Mac."))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
-                Text(String(localized: "Stored securely on your Mac."))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Link(String(localized: "Get Session Key"), destination: URL(string: "https://github.com/in-up/claude-meter")!)
+                Link(String(localized: "How to get Session Key?"), destination: URL(string: "https://github.com/in-up/claude-meter")!)
                     .font(.caption).foregroundColor(.blue)
             }
         }

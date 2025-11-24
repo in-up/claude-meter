@@ -28,5 +28,6 @@ struct SettingsView: View {
         .frame(width: 450, height: 420)
         .padding()
         .background(DockIconToggler())
+        .navigationTitle("Claudemeter")
     }
 }

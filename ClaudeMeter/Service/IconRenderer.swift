@@ -3,19 +3,20 @@ import SwiftUI
 @MainActor
 class IconRenderer {
     static let shared = IconRenderer()
-    
+
     func render(session: Double, weekly: Double, opus: Double, style: IconStyle) -> Image {
         let view = IconContainerView(
             style: style,
             session: session,
             weekly: weekly,
-            opus: opus
+            opus: opus,
+            prefs: PreferenceModel.shared
         )
-        
+
         let renderer = ImageRenderer(content: view)
         renderer.scale = 2.0
         renderer.isOpaque = false
-        
+
         if let nsImage = renderer.nsImage {
             nsImage.isTemplate = true
             return Image(nsImage: nsImage)
@@ -30,7 +31,8 @@ fileprivate struct IconContainerView: View {
     var session: Double
     var weekly: Double
     var opus: Double
-    
+    var prefs: PreferenceModel
+
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Group {
@@ -38,12 +40,12 @@ fileprivate struct IconContainerView: View {
                 case .lines:
                     LinesIconView(session: session, weekly: weekly, opus: opus)
                 case .cShape:
-                    CIconView(session: session, weekly: weekly, opus: opus)
+                    TachometerIconView(session: session, weekly: weekly, opus: opus)
                 }
             }
             .compositingGroup()
-            
-            BadgeView(usage: session).offset(x: style == .cShape ? 3 : 0, y: 0)
+
+            BadgeView(usage: session, threshold: prefs.notificationThreshold)
         }
         .frame(width: 23, height: 17)
     }
@@ -51,26 +53,27 @@ fileprivate struct IconContainerView: View {
 
 fileprivate struct BadgeView: View {
     var usage: Double
-    
+    var threshold: Double
+
     var body: some View {
         let badgeConfig: (name: String, size: CGFloat)? = {
             if usage >= 1.0 {
                 return ("lock.fill", 7)
-            } else if usage >= 0.7 {
-                return ("exclamationmark", 8)
+            } else if usage >= threshold {
+                return ("exclamationmark.triangle", 8)
             }
             return nil
         }()
-        
+
         if let config = badgeConfig {
             ZStack {
                 Circle()
                     .fill(Color.black)
                     .frame(width: 9, height: 9)
                     .blendMode(.destinationOut)
-                
+
                 Image(systemName: config.name)
-                    .font(.system(size: config.size, weight: .heavy)) // ⭐️ 두께를 Heavy로 설정
+                    .font(.system(size: config.size, weight: .heavy))
                     .foregroundStyle(Color.black)
             }
             .compositingGroup()
@@ -78,45 +81,48 @@ fileprivate struct BadgeView: View {
     }
 }
 
-fileprivate struct LinesIconView: View {
+struct LinesIconView: View {
     var session: Double
     var weekly: Double
     var opus: Double
-    
-    private let drawingColor = Color.black
-    
+    var color: Color = .primary
+
     var body: some View {
-        VStack(spacing: 1.5) {
-            makeBar(usage: session)
-            makeBar(usage: weekly)
-            
-            if opus > 0 {
-                makeBar(usage: opus)
-            } else {
-                Capsule()
-                    .fill(drawingColor.opacity(0.3))
-                    .frame(width: 16, height: 3.5)
+        GeometryReader { geometry in
+            let size = min(geometry.size.width, geometry.size.height)
+            let scale = size / 16.0
+            let barWidth = 16 * scale
+            let barHeight = 3.5 * scale
+            let spacing = 1.5 * scale
+
+            VStack(spacing: spacing) {
+                makeBar(usage: session, width: barWidth, height: barHeight)
+                makeBar(usage: weekly, width: barWidth, height: barHeight)
+
+                if opus > 0 {
+                    makeBar(usage: opus, width: barWidth, height: barHeight)
+                } else {
+                    Capsule()
+                        .fill(color.opacity(0.3))
+                        .frame(width: barWidth, height: barHeight)
+                }
             }
+            .frame(width: size, height: size)
+            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
-        .frame(width: 22, height: 15)
     }
-    
-    func makeBar(usage: Double) -> some View {
-        let width: CGFloat = 16
-        let height: CGFloat = 3.5
-        
+
+    private func makeBar(usage: Double, width: CGFloat, height: CGFloat) -> some View {
         var visualUsage = usage
         if usage > 0.0 && usage < 0.1 { visualUsage = 0.1 }
         else if usage > 0.9 && usage < 1.0 { visualUsage = 0.9 }
-        
+
         let fillWidth = max(0, min(width * visualUsage, width))
-        
+
         return ZStack(alignment: .leading) {
-            drawingColor.opacity(0.3)
-            
+            color.opacity(0.3)
             if fillWidth > 0 {
-                drawingColor
-                    .frame(width: fillWidth)
+                color.frame(width: fillWidth)
             }
         }
         .clipShape(Capsule())
@@ -124,38 +130,48 @@ fileprivate struct LinesIconView: View {
     }
 }
 
-fileprivate struct CIconView: View {
-    var session: Double; var weekly: Double; var opus: Double
-    private let color = Color.black
-    
+struct TachometerIconView: View {
+    var session: Double
+    var weekly: Double
+    var opus: Double
+    var color: Color = .primary
+
+    private static let baseSize: CGFloat = 18.0
+
     var body: some View {
-        ZStack {
-            makeArc(usage: session, radius: 7, lineWidth: 2.5)
-            makeArc(usage: weekly, radius: 4.5, lineWidth: 1.5)
-            if opus > 0 {
-                makeArc(usage: opus, radius: 2.5, lineWidth: 1.5)
+        GeometryReader { geometry in
+            let size = min(geometry.size.width, geometry.size.height)
+            let scale = size / Self.baseSize
+
+            ZStack {
+                makeArc(usage: session, radius: 6.65 * scale, lineWidth: 2.25 * scale)
+                makeArc(usage: weekly, radius: 3.75 * scale, lineWidth: 2.25 * scale)
+                if opus > 0 {
+                    makeArc(usage: opus, radius: 1.75 * scale, lineWidth: 1.5 * scale)
+                }
             }
+            .rotationEffect(.degrees(270))
+            .frame(width: size, height: size)
+            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
-        .rotationEffect(.degrees(270))
     }
-    
-    func makeArc(usage: Double, radius: CGFloat, lineWidth: CGFloat) -> some View {
+
+    private func makeArc(usage: Double, radius: CGFloat, lineWidth: CGFloat) -> some View {
         var visualUsage = usage
         if usage > 0.0 && usage < 0.1 { visualUsage = 0.1 }
         else if usage > 0.9 && usage < 1.0 { visualUsage = 0.9 }
-        
-        let trimTo = 0.75
-        
+
+        let trimTo: CGFloat = 0.75
+
         return ZStack {
             Circle()
                 .trim(from: 0, to: trimTo)
                 .stroke(color.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-            
             Circle()
                 .trim(from: trimTo * (1 - visualUsage), to: trimTo)
                 .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
         }
-        .frame(width: radius * 2, height: radius * 2)
+        .frame(width: radius * 2 + lineWidth, height: radius * 2 + lineWidth)
         .rotationEffect(.degrees(135))
     }
 }
