@@ -44,9 +44,8 @@ struct MenuBarView: View {
             Divider()
             
             // 2. 콘텐츠 영역
-            if let errorMessage = controller.errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
+            if let appError = controller.appError {
+                Text(appError.localizedDescription)
                     .font(.caption)
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 8)
@@ -135,7 +134,7 @@ struct UsageRow: View {
     func colorForUsage(_ usage: Double) -> Color {
         let threshold = prefs.notificationThreshold
         switch usage {
-        case 0..<threshold: return .blue
+        case 0..<threshold: return Color(red: 0x00/255, green: 0x64/255, blue: 0xFF/255)
         case threshold..<1.0: return .orange
         default: return .red
         }

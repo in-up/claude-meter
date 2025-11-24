@@ -25,7 +25,7 @@ struct UsageItem: Codable {
         }
 
         // 그렇지 않으면 리셋 시간까지 남은 시간 표시
-        guard let resetDate = resetDate else { return "-" }
+        guard let resetDate = resetDate else { return "" }
         let diff = resetDate.timeIntervalSince(Date())
         if diff <= 0 { return String(localized: "Ready") }
 

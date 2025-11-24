@@ -2,10 +2,30 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum AppError: Error {
+    case noSessionKey
+    case invalidSessionKey
+    case noNetwork
+    case unknown
+    
+    var localizedDescription: String {
+        switch self {
+        case .noSessionKey:
+            return NSLocalizedString("error.noSessionKey", comment: "Error message for missing session key")
+        case .invalidSessionKey:
+            return NSLocalizedString("error.invalidSessionKey", comment: "Error message for invalid or expired session key")
+        case .noNetwork:
+            return NSLocalizedString("error.noNetwork", comment: "Error message for no network connection")
+        case .unknown:
+            return NSLocalizedString("error.unknown", comment: "Error message for an unknown error")
+        }
+    }
+}
+
 @MainActor
 class UsageController: ObservableObject {
     @Published var model: UsageModel = .empty
-    @Published var errorMessage: String? = nil
+    @Published var appError: AppError? = nil
     @Published var isLoading: Bool = false
     
     // 예상 고갈 시간
@@ -36,12 +56,12 @@ class UsageController: ObservableObject {
         // [1] 저장된 세션 키 가져오기
         let sessionKey = PreferenceModel.shared.sessionKey
         guard !sessionKey.isEmpty else {
-            self.errorMessage = "Session Key를 설정해주세요."
+            self.appError = .noSessionKey
             return
         }
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.appError = nil
         
         do {
             // [2] APIService를 통해 데이터 가져오기
@@ -79,10 +99,14 @@ class UsageController: ObservableObject {
             }
             
         } catch {
-            print("Error: \(error)")
-            if let apiError = error as? APIError, case .unauthorized = apiError {
-                self.errorMessage = "세션 만료됨"
+            if case APIError.unauthorized = error {
+                self.appError = .invalidSessionKey
+            } else if let urlError = error as? URLError, urlError.code == .notConnectedToInternet {
+                self.appError = .noNetwork
+            } else {
+                self.appError = .unknown
             }
+            print("Error fetching data: \(error)")
             self.currentInterval = self.minInterval
         }
         
