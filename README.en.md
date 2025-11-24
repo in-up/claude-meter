@@ -3,12 +3,11 @@
 </p>
 
 <div align="center">
-  <img src="./images/onboarding.png" width="700px">
+  <img src="./images/onboarding.png">
   <h1>Claudemeter</h1>
   <strong>A macOS menu bar app to monitor your Claude AI API usage.</strong>
   <p>
   <p>
-  <img src="./images/menubar.png" width="200px">
 </div>
 
 <p align="center">
@@ -28,9 +27,15 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 
 - **Usage Depletion Time Prediction**: It analyzes recent usage fluctuations using Linear Regression to predict the estimated usage depletion time.
 - **Notification and Warning Function**: Provides notifications to users when a new session starts or when the set usage limit is reached.
+
+    <img src="./images/notification.png" width="300px">
+    <img src="./images/usage.png" width="300px">
+    <p>
+
 - **Customizable Menu Bar Icon**: You can choose the icon shape according to your preference.
-<img src="./images/settings.jpeg" width="300px">
-<p>
+  <img src="./images/shape.png" width="300px">
+  <img src="./images/customize.png" width="300px">
+  <p>
 
 - **Light & Dark Mode Support**: Seamlessly integrates with your macOS appearance.
 - **Automatic Update Check**: Stay up-to-date with the latest version to respond to Claude.ai API and feature updates.
@@ -56,7 +61,7 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 ---
 
 ### License
-MIT License
+MIT License (Open Source License)
 
 ### Disclaimer
 This application is an independent, unofficial tool and is not affiliated with, endorsed by, or sponsored by Anthropic, PBC. "Claude" and "Claude.ai" are trademarks of Anthropic, PBC. All product names, logos, and brands are property of their respective owners.
