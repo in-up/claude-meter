@@ -21,23 +21,18 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 
 ### Key Features
 
-- **Real-time Usage Monitoring**: You can check your current session, weekly, and Opus limits in real-time.
+- **Real-time Usage Monitoring**: You can check your current session and weekly limits in real-time.
   <img src="./images/popover.png" width="400px">
   <p>
 
-- **Usage Depletion Time Prediction**: It analyzes recent usage fluctuations using Linear Regression to predict the estimated usage depletion time.
+- **Usage Depletion Prediction (Optional)**: It analyzes recent usage fluctuations using Linear Regression and shows estimated depletion as supplemental info.
     <details>
     <summary>How can I check the predicted depletion time?</summary>
-    You can check it by enabling 'Time Left' in 'Settings' > 'Appearance' > 'Text Format'.
-    
-    The predicted depletion time is displayed based on whichever of the following two moments comes sooner to the user.
+    Turn on `Show Text in Menu Bar` in `Settings` > `General`, then enable `Show Depletion Prediction`.
 
-    1.  The predicted depletion time obtained by Linear Regression from recent usage changes.
-    2.  The time when a new session starts.
-
-    > **Why is it displayed this way?**
-
-      If the estimated depletion time is later than the start of the next session, the user will receive a new session before depleting the current one. Therefore, only one time is displayed to help the user predict the remaining time and plan their usage accordingly.
+    - `Time Left` and `Show All` in the menu bar always use the **session reset time**.
+    - `(nh nm to depletion est.)` appears in each popover row only when `Show Depletion Prediction` is enabled.
+    - If the predicted depletion is later than reset, that supplemental prediction text is hidden.
 
     </details>
 
@@ -50,7 +45,7 @@ Claudemeter is a macOS menu bar application that helps you easily track your Cla
 
   <img src="./images/usage.png" width="300px">
   <p>
-- **User Customization**: You can choose the icon shape and the text to be displayed (remaining time, usage (%), etc.) to suit your preference.
+- **User Customization**: You can choose menu bar text format (time left, usage, show all) and whether to show depletion prediction.
 
   <img src="./images/shape.png" width="300px">
 
