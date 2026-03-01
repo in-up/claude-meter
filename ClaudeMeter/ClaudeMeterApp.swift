@@ -13,7 +13,7 @@ struct ClaudeMeterApp: App {
                 IconRenderer.shared.render(
                     session: controller.model.session.usedPercentage,
                     weekly: controller.model.weekly.usedPercentage,
-                    opus: controller.model.opus.usedPercentage,
+                    opus: 0,
                     style: prefs.iconStyle
                 )
 

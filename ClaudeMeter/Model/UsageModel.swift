@@ -9,41 +9,68 @@ struct UsageItem: Codable {
     var percentageText: String {
         return String(format: "%.0f%%", usedPercentage * 100)
     }
-    
-    // 기존 로직 유지: 리셋 시간 vs 고갈 추정 시간 중 더 짧은 것 반환
-    var remainingTimeText: String {
-        // 고갈 추정 시간이 있고, 리셋보다 빠르다면 그걸 보여줌
-        if let depletion = estimatedDepletionDate,
-           let reset = resetDate,
-           depletion < reset {
-            let diff = depletion.timeIntervalSince(Date())
-            if diff <= 0 { return String(localized: "Depleted") }
 
-            let hours = Int(diff) / 3600
-            let minutes = (Int(diff) % 3600) / 60
-            return String(localized: "\(hours)h \(minutes)m left")
+    var shouldShowDepletionPrediction: Bool {
+        guard let depletion = estimatedDepletionDate,
+              let reset = resetDate else {
+            return false
         }
+        return depletion < reset
+    }
 
-        // 그렇지 않으면 리셋 시간까지 남은 시간 표시
-        guard let resetDate = resetDate else { return "" }
-        let diff = resetDate.timeIntervalSince(Date())
+    func resetDisplayText(referenceDate now: Date = Date()) -> String {
+        guard let resetDate else { return "" }
+
+        let diff = resetDate.timeIntervalSince(now)
         if diff <= 0 { return String(localized: "Ready") }
 
-        let hours = Int(diff) / 3600
-        let minutes = (Int(diff) % 3600) / 60
-        return String(localized: "\(hours)h \(minutes)m to reset")
+        if diff >= 3 * 3600 {
+            let absoluteTime = formattedAbsoluteResetTime(for: resetDate, relativeTo: now)
+            return String(format: String(localized: "Resets at %@"), absoluteTime)
+        }
+
+        let hours = Int64(Int(diff) / 3600)
+        let minutes = Int64((Int(diff) % 3600) / 60)
+        return String(format: String(localized: "%lldh %lldm to reset"), hours, minutes)
     }
-    
-    // textType에 따라 시간, 사용량, 또는 모두를 문자열로 반환
+
+    func depletionPredictionText(referenceDate now: Date = Date()) -> String? {
+        guard shouldShowDepletionPrediction,
+              let depletion = estimatedDepletionDate else {
+            return nil
+        }
+
+        let diff = depletion.timeIntervalSince(now)
+        guard diff > 0 else { return nil }
+
+        let hours = Int64(Int(diff) / 3600)
+        let minutes = Int64((Int(diff) % 3600) / 60)
+        return String(format: String(localized: "(%lldh %lldm to depletion est.)"), hours, minutes)
+    }
+
+    private func formattedAbsoluteResetTime(for resetDate: Date, relativeTo now: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .autoupdatingCurrent
+
+        if Calendar.autoupdatingCurrent.isDate(resetDate, inSameDayAs: now) {
+            formatter.setLocalizedDateFormatFromTemplate("jm")
+        } else {
+            formatter.setLocalizedDateFormatFromTemplate("MEdjm")
+        }
+
+        return formatter.string(from: resetDate)
+    }
+
     func displayText(for type: MenuBarTextType) -> String {
         switch type {
         case .time:
-            return remainingTimeText
+            return resetDisplayText()
         case .usage:
             return percentageText
         case .all:
-            // 예: "25% (3h 43m left)"
-            return "\(percentageText) (\(remainingTimeText))"
+            let resetText = resetDisplayText()
+            guard !resetText.isEmpty else { return percentageText }
+            return "\(percentageText) (\(resetText))"
         }
     }
 }

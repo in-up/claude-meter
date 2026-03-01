@@ -55,6 +55,23 @@
         }
       }
     },
+    "(%lldh %lldm to depletion est.)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lldh %lldm to depletion est.)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%lld시간 %lld분 후 소진 예상)"
+          }
+        }
+      }
+    },
     "A new version is available!" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -554,6 +571,23 @@
         }
       }
     },
+    "Resets at %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resets at %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@에 재설정"
+          }
+        }
+      }
+    },
     "Refill Alert" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -652,6 +686,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "메뉴 막대에 텍스트 표시"
+          }
+        }
+      }
+    },
+    "Show Depletion Prediction" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Depletion Prediction"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용량 소진 시간 예측 표시"
           }
         }
       }

@@ -3,6 +3,10 @@ import Foundation
 class UsageEstimator {
     private var history: [UsageType: [(date: Date, usage: Double)]] = [:]
     
+    func clear() {
+        history.removeAll()
+    }
+    
     // 데이터를 추가하고 추정 날짜를 반환
     func addDataAndEstimate(item: UsageItem) -> Date? {
         let now = Date()

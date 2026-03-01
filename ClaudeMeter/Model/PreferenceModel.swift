@@ -37,6 +37,7 @@ class PreferenceModel: ObservableObject {
 
     private let keyShowText = "claude_show_text"
     private let keyTextType = "claude_text_type"
+    private let keyShowDepletionPrediction = "claude_show_depletion_prediction"
     
     private let keyEnableNoti = "claude_enable_notifications"
     private let keyNotiThreshold = "claude_notification_threshold"
@@ -49,6 +50,7 @@ class PreferenceModel: ObservableObject {
     @Published var iconStyle: IconStyle { didSet { UserDefaults.standard.set(iconStyle.rawValue, forKey: keyIconStyle) } }
     @Published var showMenuBarText: Bool { didSet { UserDefaults.standard.set(showMenuBarText, forKey: keyShowText) } }
     @Published var menuBarTextType: MenuBarTextType { didSet { UserDefaults.standard.set(menuBarTextType.rawValue, forKey: keyTextType) } }
+    @Published var showDepletionPrediction: Bool { didSet { UserDefaults.standard.set(showDepletionPrediction, forKey: keyShowDepletionPrediction) } }
     
     @Published var enableNotifications: Bool { didSet { UserDefaults.standard.set(enableNotifications, forKey: keyEnableNoti) } }
     @Published var notificationThreshold: Double { didSet { UserDefaults.standard.set(notificationThreshold, forKey: keyNotiThreshold) } }
@@ -62,13 +64,25 @@ class PreferenceModel: ObservableObject {
         let savedPlan = UserDefaults.standard.string(forKey: keyPlan) ?? UserPlan.free.rawValue
         self.selectedPlan = UserPlan(rawValue: savedPlan) ?? .free
         
-        let savedStyle = UserDefaults.standard.string(forKey: keyIconStyle) ?? IconStyle.lines.rawValue
-        self.iconStyle = IconStyle(rawValue: savedStyle) ?? .lines
+        let savedStyle = UserDefaults.standard.string(forKey: keyIconStyle)
+        if let savedStyle, let parsedStyle = IconStyle(rawValue: savedStyle) {
+            if parsedStyle == .lines {
+                self.iconStyle = .cShape
+                UserDefaults.standard.set(IconStyle.cShape.rawValue, forKey: keyIconStyle)
+            } else {
+                self.iconStyle = parsedStyle
+            }
+        } else {
+            self.iconStyle = .cShape
+            UserDefaults.standard.set(IconStyle.cShape.rawValue, forKey: keyIconStyle)
+        }
         
         self.showMenuBarText = UserDefaults.standard.object(forKey: keyShowText) as? Bool ?? true
         
         let savedTextType = UserDefaults.standard.string(forKey: keyTextType) ?? MenuBarTextType.time.rawValue
         self.menuBarTextType = MenuBarTextType(rawValue: savedTextType) ?? .time
+        
+        self.showDepletionPrediction = UserDefaults.standard.object(forKey: keyShowDepletionPrediction) as? Bool ?? false
         
         self.enableNotifications = UserDefaults.standard.object(forKey: keyEnableNoti) as? Bool ?? true
         

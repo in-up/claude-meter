@@ -82,10 +82,16 @@ class UsageController: ObservableObject {
                 self.currentInterval = min(self.currentInterval * 1.5, self.maxInterval)
             }
             
-            // UsageEstimator로 예상 고갈 시간 계산
-            newModel.session.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.session)
-            newModel.weekly.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.weekly)
-            newModel.opus.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.opus)
+            if PreferenceModel.shared.showDepletionPrediction {
+                newModel.session.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.session)
+                newModel.weekly.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.weekly)
+                newModel.opus.estimatedDepletionDate = estimator.addDataAndEstimate(item: newModel.opus)
+            } else {
+                estimator.clear()
+                newModel.session.estimatedDepletionDate = nil
+                newModel.weekly.estimatedDepletionDate = nil
+                newModel.opus.estimatedDepletionDate = nil
+            }
             
             // 알림 조건 확인 및 전송
             NotificationManager.shared.checkAndSendNotification(

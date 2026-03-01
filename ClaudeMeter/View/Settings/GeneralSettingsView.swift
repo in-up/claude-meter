@@ -26,7 +26,7 @@ struct GeneralSettingsView: View {
                 footer: Text(String(localized: "Language can be changed in System Settings → General → Language & Region → Apps."))
             ) {
                 HStack(spacing: 16) {
-                    ForEach(IconStyle.allCases, id: \.self) { style in
+                    ForEach([IconStyle.cShape], id: \.self) { style in
                         VStack(spacing: 8) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
@@ -56,6 +56,8 @@ struct GeneralSettingsView: View {
                             Text(type.localizedName).tag(type)
                         }
                     }
+                    
+                    Toggle(String(localized: "Show Depletion Prediction"), isOn: $prefs.showDepletionPrediction)
                 }
             }
 

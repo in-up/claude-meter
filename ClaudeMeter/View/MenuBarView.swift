@@ -57,7 +57,6 @@ struct MenuBarView: View {
                 VStack(spacing: 20) {
                     UsageRow(item: controller.model.session, prefs: prefs)
                     UsageRow(item: controller.model.weekly, prefs: prefs)
-                    UsageRow(item: controller.model.opus, prefs: prefs)
                 }
             }
             
@@ -124,10 +123,21 @@ struct UsageRow: View {
             }
             .frame(height: 8)
             
-            Text(item.remainingTimeText)
+            Text(displayTimeText)
                 .font(.caption2)
                 .foregroundColor(.secondary)
         }
+    }
+
+    private var displayTimeText: String {
+        let resetText = item.resetDisplayText()
+        guard prefs.showDepletionPrediction,
+              let depletionText = item.depletionPredictionText() else {
+            return resetText
+        }
+
+        guard !resetText.isEmpty else { return depletionText }
+        return "\(resetText) \(depletionText)"
     }
     
     // 사용량에 따라 아이콘 색상 변화
@@ -161,4 +171,3 @@ struct RefreshIcon: View {
             }
     }
 }
-
