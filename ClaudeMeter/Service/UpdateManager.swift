@@ -13,7 +13,7 @@ class UpdateManager: ObservableObject {
     @Published var checkError: String? = nil
     
     // 현재 앱 버전
-    let currentVersion = "1.0.0"
+    let currentVersion = "1.1.0"
     
     private let repoOwner = "in-up"
     private let repoName = "claude-meter"
