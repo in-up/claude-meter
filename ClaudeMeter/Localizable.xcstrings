@@ -243,7 +243,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "한도 소진 시 알림 활성화"
+            "value" : "한도 소진 시 알림"
           }
         }
       }
@@ -380,6 +380,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이벤트"
+          }
+        }
+      }
+    },
+    "Features" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Features"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기능"
           }
         }
       }
@@ -600,7 +617,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "새로운 세션이 시작되면 알림 활성화"
+            "value" : "새로운 세션이 시작되면 알림"
           }
         }
       }
@@ -696,13 +713,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show Depletion Prediction"
+            "value" : "Show Depletion Prediction Alongside Usage"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사용량 소진 시간 예측 표시"
+            "value" : "사용량 소진 시간 예측을 함께 표시"
           }
         }
       }

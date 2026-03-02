@@ -50,15 +50,16 @@ struct GeneralSettingsView: View {
 
                 Toggle(String(localized: "Show Text in Menu Bar"), isOn: $prefs.showMenuBarText)
 
-                if prefs.showMenuBarText {
-                    Picker(String(localized: "Text Format"), selection: $prefs.menuBarTextType) {
-                        ForEach(MenuBarTextType.allCases, id: \.self) { type in
-                            Text(type.localizedName).tag(type)
-                        }
+                Picker(String(localized: "Text Format"), selection: $prefs.menuBarTextType) {
+                    ForEach(MenuBarTextType.allCases, id: \.self) { type in
+                        Text(type.localizedName).tag(type)
                     }
-                    
-                    Toggle(String(localized: "Show Depletion Prediction"), isOn: $prefs.showDepletionPrediction)
                 }
+                .disabled(!prefs.showMenuBarText)
+            }
+
+            Section(header: Text(String(localized: "Features"))) {
+                Toggle(String(localized: "Show Depletion Prediction"), isOn: $prefs.showDepletionPrediction)
             }
 
             // 3. Account
